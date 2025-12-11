@@ -6,7 +6,7 @@
 /*   By: yanlu <yanlu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 16:07:11 by yanlu             #+#    #+#             */
-/*   Updated: 2025/12/09 16:59:57 by yanlu            ###   ########.fr       */
+/*   Updated: 2025/12/11 14:21:35 by yanlu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,22 @@ static int	is_conversion(char c)
 		return (0);
 }
 
-static int	check_conversion(char c, va_list args)
+static int	check_conversion(char c, va_list *args)
 {
 	int	tmp;
 
 	if (c == 'c')
-		tmp = ft_putchar_fd_l(va_arg(args, int), 1);
+		tmp = ft_putchar_fd_l(va_arg(*args, int), 1);
 	else if (c == 's')
-		tmp = ft_putstr_fd_l(va_arg(args, char *), 1);
+		tmp = ft_putstr_fd_l(va_arg(*args, char *), 1);
 	else if (c == 'p')
-		tmp = ft_putptr(va_arg(args, unsigned long));
+		tmp = ft_putptr(va_arg(*args, unsigned long));
 	else if (c == 'd' || c == 'i')
-		tmp = ft_putnbr_fd_l(va_arg(args, int), 1);
+		tmp = ft_putnbr_fd_l(va_arg(*args, int), 1);
 	else if (c == 'u')
-		tmp = ft_putunbr(va_arg(args, unsigned int));
+		tmp = ft_putunbr(va_arg(*args, unsigned int));
 	else if (c == 'x' || c == 'X')
-		tmp = ft_puthex(va_arg(args, unsigned int), c);
+		tmp = ft_puthex(va_arg(*args, unsigned int), c);
 	else if (c == '%')
 		tmp = ft_putchar_fd_l('%', 1);
 	else
@@ -44,7 +44,7 @@ static int	check_conversion(char c, va_list args)
 	return (tmp);
 }
 
-static int	process_format(const char *format, va_list args, int *len)
+static int	process_format(const char *format, va_list *args, int *len)
 {
 	int	i;
 	int	tmp;
@@ -81,7 +81,7 @@ int	ft_printf(const char *format, ...)
 	va_start(args, format);
 	i = 0;
 	len = 0;
-	if (process_format(format, args, &len) < 0)
+	if (process_format(format, &args, &len) < 0)
 	{
 		va_end(args);
 		return (-1);
